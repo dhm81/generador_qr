@@ -1,0 +1,30 @@
+# Carpetas de salida generadas
+qr_generados/
+
+# Archivos Excel temporales
+~$*.xlsx
+*.xlsx.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
