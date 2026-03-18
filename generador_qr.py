@@ -9,13 +9,14 @@ RUTA_EXCEL_DEFAULT = RUTA_PROYECTO / "datos_qr.xlsx"
 RUTA_SALIDA_DEFAULT = RUTA_PROYECTO / "qr_generados"
 
 
-def generar_qr_masivo(archivo_excel=None, carpeta_salida=None):
+def generar_qr_masivo(archivo_excel=None, carpeta_salida=None, incluir_texto=True):
     """
     Genera códigos QR en masa desde un archivo Excel.
     
     Args:
         archivo_excel: Ruta al archivo Excel (.xlsx). Default: datos_qr.xlsx en carpeta del proyecto
         carpeta_salida: Carpeta donde se guardarán los QR. Default: qr_generados en carpeta del proyecto
+        incluir_texto: Si True, añade el nombre debajo del QR. Default: True
     """
     # Usar rutas default si no se especifican
     if archivo_excel is None:
@@ -84,34 +85,38 @@ def generar_qr_masivo(archivo_excel=None, carpeta_salida=None):
             # Crear imagen QR y convertir a RGB
             img_qr = qr.make_image(fill_color="black", back_color="white").convert('RGB')
             
-            # Configurar dimensiones para imagen combinada
-            ancho_qr = img_qr.size[0]
-            alto_qr = img_qr.size[1]
-            alto_texto = 40  # Espacio para el texto
-            
-            # Crear imagen combinada (QR + texto)
-            img_combinada = Image.new('RGB', (ancho_qr, alto_qr + alto_texto), 'white')
-            img_combinada.paste(img_qr, (0, 0))
-            
-            # Añadir texto del nombre debajo del QR
-            draw = ImageDraw.Draw(img_combinada)
-            
-            # Cargar fuente (Arial si está disponible, si no la fuente por defecto)
-            try:
-                font = ImageFont.truetype("C:/Windows/Fonts/arial.ttf", 18)
-            except:
-                font = ImageFont.load_default()
-            
-            # Dibujar texto centrado
-            texto = nombre_limpio[:25]
-            ancho_texto_estimado = len(texto) * 9
-            pos_x = max(10, (ancho_qr - ancho_texto_estimado) // 2)
-            pos_y = alto_qr + 8
-            
-            draw.text((pos_x, pos_y), texto, fill='black', font=font)
-            
-            # Guardar imagen combinada
-            img_combinada.save(ruta_salida)
+            if incluir_texto:
+                # Configurar dimensiones para imagen combinada
+                ancho_qr = img_qr.size[0]
+                alto_qr = img_qr.size[1]
+                alto_texto = 40  # Espacio para el texto
+                
+                # Crear imagen combinada (QR + texto)
+                img_combinada = Image.new('RGB', (ancho_qr, alto_qr + alto_texto), 'white')
+                img_combinada.paste(img_qr, (0, 0))
+                
+                # Añadir texto del nombre debajo del QR
+                draw = ImageDraw.Draw(img_combinada)
+                
+                # Cargar fuente (Arial si está disponible, si no la fuente por defecto)
+                try:
+                    font = ImageFont.truetype("C:/Windows/Fonts/arial.ttf", 18)
+                except:
+                    font = ImageFont.load_default()
+                
+                # Dibujar texto centrado
+                texto = nombre_limpio[:25]
+                ancho_texto_estimado = len(texto) * 9
+                pos_x = max(10, (ancho_qr - ancho_texto_estimado) // 2)
+                pos_y = alto_qr + 8
+                
+                draw.text((pos_x, pos_y), texto, fill='black', font=font)
+                
+                # Guardar imagen combinada
+                img_combinada.save(ruta_salida)
+            else:
+                # Guardar solo el QR sin texto
+                img_qr.save(ruta_salida)
             
             preview = datos_qr[:50] + '...' if len(datos_qr) > 50 else datos_qr
             print(f"{nombre_limpio}.png → {preview}")

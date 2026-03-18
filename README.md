@@ -5,11 +5,13 @@ Aplicación Python para generar códigos QR en masa desde un archivo Excel. Cada
 ## Características
 
 - Generación masiva de códigos QR desde archivo Excel
-- Texto identificador debajo de cada QR
+- **Interfaz gráfica intuitiva con tkinter**
+- **Opción de generar QR con o sin texto debajo**
 - Alta corrección de errores (30% recuperable)
 - Nombres de archivo limpios automáticamente
-- Reporte de éxito/error por consola
+- Reporte de éxito/error por consola y en GUI
 - Rutas configurables
+- Progreso en tiempo real en la interfaz gráfica
 
 ## Requisitos
 
@@ -45,7 +47,20 @@ Ejemplo:
 | Maria García | https://wa.me/1234567890 |
 | Producto_A | SKU-12345-ABC |
 
-### Ejecutar
+### Opción 1: Interfaz Gráfica (Recomendado)
+
+Ejecuta la interfaz gráfica con:
+```bash
+python gui.py
+```
+
+La interfaz incluye:
+- Selector de archivo Excel
+- Selector de carpeta de salida
+- Checkbox para incluir/no incluir nombre en la imagen
+- Área de log para ver el progreso en tiempo real
+
+### Opción 2: Línea de Comandos
 
 #### Modo básico (usando configuración por defecto)
 
@@ -63,7 +78,8 @@ from generador_qr import generar_qr_masivo
 # Con rutas personalizadas
 generar_qr_masivo(
     archivo_excel="C:/mis_datos/contactos.xlsx",
-    carpeta_salida="C:/mis_qr/resultados"
+    carpeta_salida="C:/mis_qr/resultados",
+    incluir_texto=True  # True para incluir nombre, False para solo QR
 )
 ```
 
@@ -72,10 +88,13 @@ generar_qr_masivo(
 ```
 Generador_QR/
 ├── generador_qr.py       # Script principal
+├── gui.py               # Interfaz gráfica
 ├── requirements.txt      # Dependencias
 ├── datos_qr.xlsx         # Archivo de entrada (ejemplo)
 ├── qr_generados/         # Carpeta de salida (generada automáticamente)
-└── README.md            # Este archivo
+├── README.md            # Este archivo
+├── .gitignore           # Archivos a ignorar
+└── LICENSE              # Licencia MIT
 ```
 
 ## Configuración
